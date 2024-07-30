@@ -116,9 +116,11 @@ RISCVTargetLowering::RISCVTargetLowering(const TargetMachine &TM,
   }
 
   MVT XLenVT = Subtarget.getXLenVT();
+  MVT PtrVT = Subtarget.getPtrVT();
 
   // Set up the register classes.
   addRegisterClass(XLenVT, &RISCV::GPRRegClass);
+  addRegisterClass(PtrVT, &RISCV::GPRRegClass);
   if (Subtarget.is64Bit() && RV64LegalI32)
     addRegisterClass(MVT::i32, &RISCV::GPRRegClass);
 
@@ -625,9 +627,9 @@ RISCVTargetLowering::RISCVTargetLowering(const TargetMachine &TM,
 
   setOperationAction({ISD::GlobalAddress, ISD::BlockAddress, ISD::ConstantPool,
                       ISD::JumpTable},
-                     XLenVT, Custom);
+                     PtrVT, Custom);
 
-  setOperationAction(ISD::GlobalTLSAddress, XLenVT, Custom);
+  setOperationAction(ISD::GlobalTLSAddress, PtrVT, Custom);
 
   if (Subtarget.is64Bit())
     setOperationAction(ISD::Constant, MVT::i64, Custom);

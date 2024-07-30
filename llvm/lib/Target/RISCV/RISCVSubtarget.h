@@ -162,9 +162,18 @@ public:
            hasShortForwardBranchOpt();
   }
 
+  bool isILP32() const {
+    return TargetABI == RISCVABI::ABI_ILP32 ||
+      TargetABI == RISCVABI::ABI_ILP32D ||
+      TargetABI == RISCVABI::ABI_ILP32E ||
+      TargetABI == RISCVABI::ABI_ILP32F;
+  }
   bool is64Bit() const { return IsRV64; }
   MVT getXLenVT() const {
     return is64Bit() ? MVT::i64 : MVT::i32;
+  }
+  MVT getPtrVT() const {
+    return isILP32() ? MVT::i32 : MVT::i64;
   }
   unsigned getXLen() const {
     return is64Bit() ? 64 : 32;
